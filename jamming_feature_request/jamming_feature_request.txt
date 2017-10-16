@@ -1,0 +1,35 @@
+﻿Feature Request: Songs already in the playlist are not displayed in the search results
+October 15th 2017
+
+
+OBJECTIVE
+To have the search results element only display songs not currently in the playlist.
+BACKGROUND 
+Right now when a user adds a song to the playlist, the song that was added remains in the search results and becomes an unnecessary element. Like this it has no function and is not satisfying to the user.
+This feature accomplishes the following:
+* Remove the song from the search results when a user adds it to the playlist.
+* Restore the song to the search results when a user removes it from the playlist.
+TECHNICAL DESIGN
+Removing the song from the search results when it is added to the playlist
+
+
+In the App.js function addTrack() function, code will need to be added that takes the added song out of the searchResults array. We can do this by using the .filter() function which would create a new array without the selected song.
+
+
+Adding a song to the search results when it is removed from the playlist
+
+
+If the user removes a song from the playlist, and the song was part of the last search, then it should be reappear in the search results. In the App.js removeTrack() function we will need to add code that adds this functionality. First we will need to create a lastSearch array at the very beginning of the component, and in the search() function we will set the lastSearch array to the list returned by Spotify.search(). Then in the removeTrack() function we will use .filter() to determine if the removed song was in the search. If it is, the song will be added to the end of the list using .push().
+CAVEATS
+
+
+App lastSearch State
+
+
+We could add a new state in App.js instead of creating a Component level variable, but since it is only used within the component itself, and is not passed as a prop, it would be unnecessary and messy to implement this this manner.
+
+
+App search method to retrieve search list
+
+
+We could also, instead of creating a new variable or state, simply call the search function to retrieve the original search array, but the way it works it would take whatever was in the search bar and use that as the term, but if the user were to have typed something in the search bar without hitting the search button, the retrieved information would be incorrect. This way may seem more simple, but it is prone to errors.
